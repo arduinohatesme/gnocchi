@@ -83,6 +83,13 @@ pcbs:
         params:
           X: P026
           Y: P027
+      wheel:
+        what: evqwgd001
+        where: hardware_stick_pos
+        params:
+          A: 029
+          B: GND
+          C: 031
       mcu:
         what: ceoloide/mcu_nice_nano
         where:
