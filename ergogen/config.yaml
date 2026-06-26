@@ -11,9 +11,9 @@ points:
             top:
               skip: true
         pinky.key.stagger: -0.2U
-        ring.key.stagger: 0.66U
+        ring.key.stagger: 0.8U
         middle.key.stagger: 0.25U
-        index.key.stagger: -0.25U
+        index.key.stagger: -0.3U
         inner.key.stagger: -0.15U
       rows:
         bottom.padding: U
@@ -22,7 +22,7 @@ points:
     thumb:
       anchor:
         ref: matrix_index_bottom
-        shift: [1.6U, -2U]
+        shift: [1.6U, -1.8U]
       columns:
         tucky:
           key.splay: -20
@@ -49,9 +49,22 @@ points:
               key.name: thumb_reachy_low
             bottom:
               skip: true
+    hardware:
+      anchor:
+        ref: thumb_tucky_top
+      columns:
+        stick_pos:
+          key:
+            shift: [-1.2U, 0]
+            rotate: 20
+            mirror: false
+            asym: left
+  mirror:
+    ref: matrix_pinky_home
+    distance: 300
 
 pcbs:
-  simple_split:
+  gnocchi:
     template: kicad8
     footprints:
       keys:
@@ -63,6 +76,13 @@ pcbs:
           reversible: true
           solder: true
           include_keycap: true
+      joystick:
+        what: joystick
+        where: hardware_stick_pos_mirror
+        asym: source
+        params:
+          X: P026
+          Y: P027
       mcu:
         what: ceoloide/mcu_nice_nano
         where:
