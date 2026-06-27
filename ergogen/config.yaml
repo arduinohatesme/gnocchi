@@ -52,13 +52,9 @@ points:
     hardware:
       anchor:
         ref: thumb_tucky_top
-      columns:
-        stick_pos:
-          key:
-            shift: [-1.2U, 0]
-            rotate: 20
-            mirror: false
-            asym: left
+        shift: [-1.2U, 0]
+        rotate: 20
+
   mirror:
     ref: matrix_pinky_home
     distance: 300
@@ -71,21 +67,31 @@ pcbs:
         what: ceoloide/switch_mx
         where: true
         params:
-          from: GND
-          to: "{{name}}"
+          from: "{{column_net}}"
+          to: "{{colrow}}"
           reversible: true
           solder: true
           include_keycap: true
       joystick:
         what: joystick
-        where: hardware_stick_pos_mirror
-        asym: source
+        where: hardware
+        asym: left
         params:
-          X: P026
-          Y: P027
+          H1: GND
+          H2: P020
+          H3: VCC
+          V1: GND
+          V2: P022
+          V3: VCC
+          B1A: pos
+          B2A: GND
+          B1B: GND
+          B2B: GND
+          MOUN: GND
       wheel:
         what: evqwgd001
-        where: hardware_stick_pos
+        where: hardware
+        asym: right
         params:
           from: "{{column_net}}"
           to: "{{colrow}}"
@@ -101,37 +107,5 @@ pcbs:
         params:
           reversible: true
           only_required_jumpers: true
-          P7: matrix_pinky_top
-          P7_label: P7
-          P18: matrix_ring_top
-          P18_label: P18
-          P19: matrix_middle_top
-          P19_label: P19
-          P20: matrix_index_top
-          P20_label: P20
-          P21: matrix_inner_top
-          P21_label: P21
-          P15: matrix_pinky_home
-          P15_label: P15
-          P14: matrix_ring_home
-          P14_label: P14
-          P16: matrix_middle_home
-          P16_label: P16
-          P10: matrix_index_home
-          P10_label: P10
-          P1: matrix_inner_home
-          P1_label: P1
-          P2: matrix_pinky_bottom
-          P2_label: P2
-          P3: matrix_ring_bottom
-          P3_label: P3
-          P4: matrix_middle_bottom
-          P4_label: P4
-          P5: matrix_index_bottom
-          P5_label: P5
-          P6: matrix_inner_bottom
-          P6_label: P6
-          P8: thumb_tucky
-          P8_label: P8
-          P9: thumb_reachy
-          P9_label: P9
+          rows: [ P031, P029, P002, P115 ]
+          columns: [ P113, P111, P010, P009, P106 ]
