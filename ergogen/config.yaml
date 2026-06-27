@@ -87,9 +87,12 @@ pcbs:
         what: evqwgd001
         where: hardware_stick_pos
         params:
-          A: 029
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+          A: P029
           B: GND
-          C: 031
+          C: P031
+          D: undef
       mcu:
         what: ceoloide/mcu_nice_nano
         where:
