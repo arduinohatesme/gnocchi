@@ -7,22 +7,46 @@ points:
       anchor.shift: [50,-100] # Fix KiCad placement
       columns:
         xtra_pinky:
+          key:
+            column_net: P113
           rows:
             top:
               skip: true
-        pinky.key.stagger: -0.2U
-        ring.key.stagger: 0.8U
-        middle.key.stagger: 0.25U
-        index.key.stagger: -0.3U
-        inner.key.stagger: -0.15U
+        pinky:
+          key:
+            column_net: P111
+            stagger: -0.2U
+        ring:
+          key:
+            column_net: P010
+            stagger: 0.8U
+        middle:
+          key:
+            column_net: P009
+            stagger: 0.25U
+        index:
+          key:
+            column_net: P106
+            stagger: -0.3U
+        inner:
+          key:
+            column_net: P104
+            stagger: -0.15U
       rows:
-        bottom.padding: U
-        home.padding: U
-        top.padding: U
+        bottom:
+          row_net: P031
+          padding: U
+        home:
+          row_net: P029
+          padding: U
+        top:
+          row_net: P002
+          padding: U
+
     thumb:
       anchor:
         ref: matrix_index_bottom
-        shift: [1.6U, -1.8U]
+        shift: [1.8U, -1.8U]
       columns:
         tucky:
           key.splay: -20
@@ -49,29 +73,76 @@ points:
               key.name: thumb_reachy_low
             bottom:
               skip: true
+      rows:
+        top:
+          row_net: P011
+        bottom:
+          row_net: P115
+
     hardware:
       anchor:
         ref: thumb_tucky_top
         shift: [-1.2U, 0]
         rotate: 20
 
+    controllers:
+      anchor:
+        ref: matrix_inner_home
+        shift: [1U, 0.5U]
+      columns:
+        main:
+          key:
+            tags: [mcu]
+
   mirror:
     ref: matrix_pinky_home
     distance: 300
 
+outlines:
+  left_raw:
+    - what: rectangle
+      where: /^matrix_|^thumb_/
+      size: [1U + 2, 1U + 2]
+    - what: rectangle
+      where: /^controllers_main_key/
+      size: [18, 33]
+
+  right_raw:
+    - what: rectangle
+      where: /^mirror_/
+      size: [1U + 2, 1U + 2]
+
+  left_outline:
+    - what: outline
+      name: left_raw
+      expand: 3
+      fillet: 2
+
+  right_outline:
+    - what: outline
+      name: right_raw
+      expand: 3
+      fillet: 2
+
 pcbs:
-  gnocchi:
+  left_gnocchi:
     template: kicad8
+    outlines:
+      main:
+        outline: left_outline
+
     footprints:
       keys:
         what: ceoloide/switch_mx
-        where: true
+        where: /^matrix_|^thumb_/
         params:
           from: "{{column_net}}"
           to: "{{colrow}}"
-          reversible: true
-          solder: true
+          hotswap: true
+          reversible: false
+          solder: false
           include_keycap: true
+
       joystick:
         what: joystick
         where: hardware
@@ -88,6 +159,32 @@ pcbs:
           B1B: GND
           B2B: GND
           MOUN: GND
+
+      mcu:
+        what: ceoloide/mcu_nice_nano
+        where: controllers_main_key
+        params:
+          reversible: true
+          only_required_jumpers: true
+
+  right_gnocchi:
+    template: kicad8
+    outlines:
+      main:
+        outline: right_outline
+
+    footprints:
+      keys:
+        what: ceoloide/switch_mx
+        where: /^mirror_/
+        params:
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+          hotswap: true
+          reversible: false
+          solder: false
+          include_keycap: true
+
       wheel:
         what: evqwgd001
         where: hardware
@@ -99,13 +196,3 @@ pcbs:
           B: GND
           C: P031
           D: undef
-      mcu:
-        what: ceoloide/mcu_nice_nano
-        where:
-          - ref: matrix_inner_home
-            shift: [1U, 0.5U]
-        params:
-          reversible: true
-          only_required_jumpers: true
-          rows: [ P031, P029, P002, P115 ]
-          columns: [ P113, P111, P010, P009, P106 ]
