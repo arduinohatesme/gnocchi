@@ -1,0 +1,58 @@
+
+(rules PCB right_gnocchi.dsn
+  (snap_angle 
+    fortyfive_degree
+  )
+  (rule
+    (width 200.0)
+    (clearance 200.0)
+    (clearance 100.0 (type smd_to_turn_gap))
+    (clearance 50.0 (type smd))
+    (clearance 200.0 (type "kicad_default"))
+  )
+  (padstack "Via[0-1]_600:300_um"
+    (shape
+      (circle F.Cu 600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_600:300_um" "Via[0-1]_600:300_um" default
+  )
+  (via 
+    "Via[0-1]_600:300_um-kicad_default" "Via[0-1]_600:300_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_600:300_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_600:300_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    bottom "mirror_pinky_bottom" GND home "mirror_pinky_home" top "mirror_pinky_top" "mirror_ring_bottom"
+    "mirror_ring_home" "mirror_ring_top" "mirror_middle_bottom" "mirror_middle_home" "mirror_middle_top" "mirror_index_bottom" "mirror_index_home" "mirror_index_top"
+    "mirror_inner_bottom" "mirror_inner_home" "mirror_inner_top" "mirror_tucky_top" "mirror_tucky_bottom" "mirror_mid_top" "mirror_mid_bottom" "mirror_reachy_top"
+    default "mirror_main_default" P19 P18 undef
+    (clearance_class "kicad_default")
+    (via_rule "kicad_default")
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)

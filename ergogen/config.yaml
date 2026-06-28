@@ -6,41 +6,35 @@ points:
     matrix:
       anchor.shift: [50,-100] # Fix KiCad placement
       columns:
-        xtra_pinky:
-          key:
-            column_net: P113
-          rows:
-            top:
-              skip: true
         pinky:
           key:
-            column_net: P111
+            column_net: P2
             stagger: -0.2U
         ring:
           key:
-            column_net: P010
+            column_net: P3
             stagger: 0.8U
         middle:
           key:
-            column_net: P009
+            column_net: P4
             stagger: 0.25U
         index:
           key:
-            column_net: P106
+            column_net: P5
             stagger: -0.3U
         inner:
           key:
-            column_net: P104
+            column_net: P6
             stagger: -0.15U
       rows:
         bottom:
-          row_net: P031
+          row_net: P7
           padding: U
         home:
-          row_net: P029
+          row_net: P8
           padding: U
         top:
-          row_net: P002
+          row_net: P9
           padding: U
 
     thumb:
@@ -55,15 +49,15 @@ points:
               key.name: thumb_tucky_high
             bottom:
               key.name: thumb_tucky_low
-        middle:
+        mid:
           key.spread: U
           key.splay: -15
           key.origin: [-0.5U, -0.5U]
           rows:
             top:
-              key.name: thumb_middle_high
+              key.name: thumb_mid_high
             bottom:
-              key.name: thumb_middle_low
+              key.name: thumb_mid_low
         reachy:
           key.spread: U
           key.splay: -15
@@ -75,24 +69,29 @@ points:
               skip: true
       rows:
         top:
-          row_net: P011
+          row_net: P10
         bottom:
-          row_net: P115
+          row_net: P16
 
     hardware:
       anchor:
         ref: thumb_tucky_top
         shift: [-1.2U, 0]
         rotate: 20
+      columns:
+        main:
+          key:
+            tags: [hardware]
 
     controllers:
       anchor:
         ref: matrix_inner_home
-        shift: [1U, 0.5U]
+        shift: [1U, 0.6U]
       columns:
         main:
           key:
             tags: [mcu]
+            asym: left
 
   mirror:
     ref: matrix_pinky_home
@@ -101,10 +100,11 @@ points:
 outlines:
   left_raw:
     - what: rectangle
-      where: /^matrix_|^thumb_/
+      where: /^matrix_|^thumb_|^hardware_/
       size: [1U + 2, 1U + 2]
+
     - what: rectangle
-      where: /^controllers_main_key/
+      where: /^controllers_/
       size: [18, 33]
 
   right_raw:
@@ -117,12 +117,14 @@ outlines:
       name: left_raw
       expand: 3
       fillet: 2
+      bound: true
 
   right_outline:
     - what: outline
       name: right_raw
       expand: 3
       fillet: 2
+      bound: true
 
 pcbs:
   left_gnocchi:
@@ -136,7 +138,7 @@ pcbs:
         what: ceoloide/switch_mx
         where: /^matrix_|^thumb_/
         params:
-          from: "{{column_net}}"
+          from: "{{row}}"
           to: "{{colrow}}"
           hotswap: true
           reversible: false
@@ -145,16 +147,15 @@ pcbs:
 
       joystick:
         what: joystick
-        where: hardware
-        asym: left
+        where: /^hardware_/
         params:
           H1: GND
-          H2: P020
+          H2: P14
           H3: VCC
           V1: GND
-          V2: P022
+          V2: P15
           V3: VCC
-          B1A: pos
+          B1A: P20
           B2A: GND
           B1B: GND
           B2B: GND
@@ -162,10 +163,19 @@ pcbs:
 
       mcu:
         what: ceoloide/mcu_nice_nano
-        where: controllers_main_key
+        where: /^controllers_/
         params:
-          reversible: true
-          only_required_jumpers: true
+          reversible: false
+
+      diodes:
+        what: diode
+        where: /^matrix_|^thumb_/
+        adjust:
+          shift: [0, -4.5]
+          rotate: 0
+        params:
+          from: "{{colrow}}"
+          to: "{{row}}"
 
   right_gnocchi:
     template: kicad8
@@ -178,7 +188,7 @@ pcbs:
         what: ceoloide/switch_mx
         where: /^mirror_/
         params:
-          from: "{{column_net}}"
+          from: "{{row}}"
           to: "{{colrow}}"
           hotswap: true
           reversible: false
@@ -187,12 +197,42 @@ pcbs:
 
       wheel:
         what: evqwgd001
-        where: hardware
-        asym: right
+        where: /^mirror_hardware_/
         params:
-          from: "{{column_net}}"
+          from: "{{row}}"
           to: "{{colrow}}"
-          A: P029
+          A: P19
           B: GND
-          C: P031
+          C: P18
           D: undef
+
+      wheel_d:
+        what: diode
+        where: /^mirror_hardware_/
+        adjust:
+          shift: [0, -6]
+        params:
+          from: "{{colrow}}"
+          to: "{{row}}"
+
+      diodes:
+        what: diode
+        where: /^mirror_/
+        adjust:
+          shift: [0, -4.5]
+          rotate: 0
+        params:
+          from: "{{colrow}}"
+          to: "{{row}}"
+
+      via_col:
+        what: via
+        where: /^mirror_via/
+        params:
+          net: "{{column_net}}"
+
+      via_row:
+        what: via
+        where: /^mirror_via/
+        params:
+          net: "{{colrow}}"

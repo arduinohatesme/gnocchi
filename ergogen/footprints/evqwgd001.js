@@ -65,11 +65,6 @@ module.exports = {
           (fp_line (start ${def_pos}9.1 -7.3) (end ${def_pos}7.3 -7.3) (layer Edge.Cuts) (width 0.15))
           (fp_line (start ${def_pos}7.3 7.3) (end ${def_pos}9.1 7.3) (layer Edge.Cuts) (width 0.15))
 
-          (fp_arc (start ${def_pos}7.3 7.0) (end ${def_pos}7.0 7.0) (angle ${def_neg}90) (layer Edge.Cuts) (width 0.15))
-          (fp_arc (start ${def_pos}9.1 7.0) (end ${def_pos}9.1 7.3) (angle ${def_neg}90) (layer Edge.Cuts) (width 0.15))
-          (fp_arc (start ${def_pos}9.1 -7) (end ${def_pos}9.4 -7) (angle ${def_neg}90) (layer Edge.Cuts) (width 0.15))
-          (fp_arc (start ${def_pos}7.3 -7.0) (end ${def_pos}7.3 -7.3) (angle ${def_neg}90) (layer Edge.Cuts) (width 0.15))
-
           ${'' /* pins */}
           (pad S1 thru_hole circle (at ${def_neg}7.375 -6.85 ${p.r}) (size 1.6 1.6) (drill 0.9) (layers *.Cu *.Mask) ${p.from})
           (pad S2 thru_hole circle (at ${def_neg}5.375 -6.85 ${p.r}) (size 1.6 1.6) (drill 0.9) (layers *.Cu *.Mask) ${p.to})
